@@ -1,7 +1,7 @@
 public class Account {
     private String name;
     private String owner;
-    private int balance;
+    private double balance;
 
     public Account(String name, String owner) {
         this.name = name;
@@ -9,11 +9,22 @@ public class Account {
         balance = 0;
     }
 
-    public void addBalance(int toAdd) {
+    public void addBalance(double toAdd) {
         balance += toAdd;
     }
 
-    public void subtractBalance(int toSubtract) {
-        balance -= toSubtract;
+    public double getBalance() {
+        return balance;
+    }
+
+    //false means transaction failed, true means transaction went through
+    public boolean subtractBalance(int toSubtract) {
+        double temp = balance;
+        if(temp - toSubtract < 0) {
+            return false;
+        } else {
+            balance -= toSubtract;
+            return true;
+        }
     }
 }
