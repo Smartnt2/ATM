@@ -66,10 +66,20 @@ public class ATM {
                 } catch (Exception e) {
                     System.out.println("Please enter a number.");
                     scan.nextLine();
+                    try {
+                        Thread.sleep(750);
+                    } catch (InterruptedException e1) {
+                        System.out.println("error");
+                    }
                     continue;
                 }
                 if(!customer.checkPin(input)) {
                     System.out.println("That is not the correct PIN, please try again.");
+                    try {
+                        Thread.sleep(750);
+                    } catch (InterruptedException e1) {
+                        System.out.println("error");
+                    }
                 }
             }
             //menu
@@ -87,6 +97,11 @@ public class ATM {
             } catch (Exception e) {
                 System.out.println("Please enter a number.");
                 scan.nextLine();
+                try {
+                    Thread.sleep(750);
+                } catch (InterruptedException e1) {
+                    System.out.println("error");
+                }
             }
             if(input == 1) {
                 //option 1
@@ -98,6 +113,11 @@ public class ATM {
                     if(accountSelection != 1 && accountSelection != 2) {
                         System.out.println("Please enter either 1 or 2.");
                         scan.nextLine();
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     } else {
                         break;
                     }
@@ -108,41 +128,65 @@ public class ATM {
                 int withdrawAmount = 0;
                 while(withdrawAmount == 0) {
                     System.out.println("This machine only dispenses 5's and 20's.");
-                    System.out.print("How many 5's would you like to withdraw?");
+                    System.out.print("How many 5's would you like to withdraw? ");
                     try {
                         numFives = scan.nextInt();
                     } catch (Exception e) {
                         System.out.println("Please enter a number.");
                         scan.nextLine();
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     }
-                    System.out.print("How many 20's would you like to withdraw?");
+                    System.out.print("How many 20's would you like to withdraw? ");
                     try {
                         numTwenties = scan.nextInt();
                     } catch (Exception e) {
                         System.out.println("Please enter a number.");
                         scan.nextLine();
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     }
                     withdrawAmount = numFives * 5 + numTwenties * 20;
                 }
                 if(accountSelection == 1) {
                     if(!savings.subtractBalance(withdrawAmount)) {
                         System.out.println("Insufficient funds.");
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     } else {
                         transactionHistory.incrementTransactionHistory("A");
                         transactionHistory.addTransaction("A");
                         System.out.println("Successfully withdrew " + "$" + withdrawAmount + " from savings");
                         System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
                         System.out.println("Current balance in savings account: " + savings.getBalance());
+                        System.out.println("Press enter to return to the main menu");
+                        scan.nextLine();
                     }
                 } else {
                     if(!checking.subtractBalance(withdrawAmount)) {
                         System.out.println("insufficient funds.");
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     } else {
                         transactionHistory.incrementTransactionHistory("A");
                         transactionHistory.addTransaction("A");
                         System.out.println("Successfully withdrew " + "$" + withdrawAmount + " from checking");
                         System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
                         System.out.println("Current balance in checking account: " + checking.getBalance());
+                        System.out.println("Press enter to return to the main menu");
+                        scan.nextLine();
                     }
                 }
 
@@ -156,6 +200,11 @@ public class ATM {
                     if(accountSelection != 1 && accountSelection != 2) {
                         System.out.println("Please enter either 1 or 2.");
                         scan.nextLine();
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     } else {
                         break;
                     }
@@ -169,6 +218,11 @@ public class ATM {
                     } catch (Exception e) {
                         System.out.println("Please enter a number.");
                         scan.nextLine();
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     }
                 }
                 ConsoleUtility.clearScreen();
@@ -179,6 +233,8 @@ public class ATM {
                     System.out.println("Successfully deposited " + "$" + depositAmount + " to savings");
                     System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
                     System.out.println("Current balance in savings account: " + savings.getBalance());
+                    System.out.println("Press enter to return to the main menu");
+                    scan.nextLine();
                 } else {
                     savings.addBalance(depositAmount);
                     transactionHistory.incrementTransactionHistory("A");
@@ -186,6 +242,8 @@ public class ATM {
                     System.out.println("Successfully deposited " + "$" + depositAmount + " to checking");
                     System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
                     System.out.println("Current balance in checking account: " + checking.getBalance());
+                    System.out.println("Press enter to return to the main menu");
+                    scan.nextLine();
                 }
             } if(input == 3) {
                 //option 3
@@ -197,6 +255,11 @@ public class ATM {
                     if (fromAccount != 1 && fromAccount != 2) {
                         System.out.println("Please enter either 1 or 2.");
                         scan.nextLine();
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     }
                 }
                 while(toAccount == 0) {
@@ -205,6 +268,11 @@ public class ATM {
                     if (toAccount != 1 && toAccount != 2) {
                         System.out.println("Please enter either 1 or 2.");
                         scan.nextLine();
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     }
                 }
                 ConsoleUtility.clearScreen();
@@ -216,29 +284,53 @@ public class ATM {
                     } catch (Exception e) {
                         System.out.println("Please enter a number.");
                         scan.nextLine();
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     }
                 }
                 if(fromAccount == 1) {
                     if(!savings.subtractBalance(transferAmount)) {
                         System.out.println("Insufficient funds in savings account.");
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     } else {
                         checking.addBalance(transferAmount);
                         transactionHistory.incrementTransactionHistory("A");
                         transactionHistory.addTransaction("A");
                         System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
+                        System.out.println("Press enter to return to the main menu");
+                        scan.nextLine();
 
                     }
                 } else {
                     if(!checking.subtractBalance(transferAmount)) {
                         System.out.println("Insufficient funds in checking account.");
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     } else {
                         savings.addBalance(transferAmount);
                         transactionHistory.incrementTransactionHistory("A");
                         transactionHistory.addTransaction("A");
                         System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
+                        System.out.println("Press enter to return to the main menu");
+                        scan.nextLine();
                     }
                 }
                 System.out.println("Transfer successful.");
+                try {
+                    Thread.sleep(750);
+                } catch (InterruptedException e1) {
+                    System.out.println("error");
+                }
             } if(input == 4) {
                 //option 4
                 System.out.println("Savings account: " + savings.getBalance());
@@ -246,7 +338,7 @@ public class ATM {
                 transactionHistory.incrementTransactionHistory("S");
                 transactionHistory.addTransaction("S");
                 System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
-                System.out.println("Press enter to continue");
+                System.out.println("Press enter to return to the main menu");
                 scan.nextLine();
             } if(input == 5) {
                 //option 5
@@ -254,7 +346,7 @@ public class ATM {
                 transactionHistory.incrementTransactionHistory("S");
                 transactionHistory.addTransaction("S");
                 System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
-                System.out.println("Press enter to continue");
+                System.out.println("Press enter to return to the main menu");
                 scan.nextLine();
             } if(input == 6) {
                 //option 6
@@ -266,6 +358,11 @@ public class ATM {
                     } catch (Exception e) {
                         System.out.println("Please enter an integer.");
                         scan.nextLine();
+                        try {
+                            Thread.sleep(750);
+                        } catch (InterruptedException e1) {
+                            System.out.println("error");
+                        }
                     }
                 }
                 customer.setPin(newPin);
@@ -273,7 +370,7 @@ public class ATM {
                 transactionHistory.addTransaction("S");
                 System.out.println("Changed PIN.");
                 System.out.println("Transaction ID" + transactionHistory.getLastTransaction());
-                System.out.println("Press enter to continue");
+                System.out.println("Press enter to return to the main menu");
                 scan.nextLine();
             }
         }
