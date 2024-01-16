@@ -1,5 +1,4 @@
 import com.sun.jdi.connect.Connector;
-
 import java.sql.SQLOutput;
 import java.util.*;
 public class ATM {
@@ -54,25 +53,26 @@ public class ATM {
             System.out.println("error");
         }
 
+
         int input = 0;
-        while(!customer.checkPin(input)) {
-            ConsoleUtility.clearScreen();
-            System.out.print("Please enter your PIN number: ");
-            try {
-                input = scan.nextInt();
-            } catch (Exception e) {
-                System.out.println("Please enter a number.");
-                scan.nextLine();
-                continue;
-            }
-            if(!customer.checkPin(input)) {
-                System.out.println("That is not the correct PIN, please try again.");
-            }
-        }
-
-
-        input = 0;
         while(input != 7) {
+            //ask for pin
+            input = 0;
+            while(!customer.checkPin(input)) {
+                ConsoleUtility.clearScreen();
+                System.out.print("Please enter your PIN number: ");
+                try {
+                    input = scan.nextInt();
+                } catch (Exception e) {
+                    System.out.println("Please enter a number.");
+                    scan.nextLine();
+                    continue;
+                }
+                if(!customer.checkPin(input)) {
+                    System.out.println("That is not the correct PIN, please try again.");
+                }
+            }
+            //menu
             System.out.println("Welcome, " + customer.getName() + ", how can we help you today?");
             System.out.println("1. Withdraw money");
             System.out.println("2. Deposit money");
@@ -89,6 +89,7 @@ public class ATM {
                 scan.nextLine();
             }
             if(input == 1) {
+                //option 1
                 ConsoleUtility.clearScreen();
                 int accountSelection;
                 while(true) {
@@ -96,6 +97,7 @@ public class ATM {
                     accountSelection = scan.nextInt();
                     if(accountSelection != 1 && accountSelection != 2) {
                         System.out.println("Please enter either 1 or 2.");
+                        scan.nextLine();
                     } else {
                         break;
                     }
@@ -145,6 +147,7 @@ public class ATM {
                 }
 
             } if(input == 2) {
+                //option 2
                 ConsoleUtility.clearScreen();
                 int accountSelection;
                 while(true) {
@@ -152,6 +155,7 @@ public class ATM {
                     accountSelection = scan.nextInt();
                     if(accountSelection != 1 && accountSelection != 2) {
                         System.out.println("Please enter either 1 or 2.");
+                        scan.nextLine();
                     } else {
                         break;
                     }
@@ -183,8 +187,95 @@ public class ATM {
                     System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
                     System.out.println("Current balance in checking account: " + checking.getBalance());
                 }
-            }
+            } if(input == 3) {
+                //option 3
+                int fromAccount = 0;
+                int toAccount = 0;
+                while(fromAccount == 0) {
+                    System.out.print("What account do you want to transfer from? 1. Savings or 2. Checking: ");
+                    fromAccount = scan.nextInt();
+                    if (fromAccount != 1 && fromAccount != 2) {
+                        System.out.println("Please enter either 1 or 2.");
+                        scan.nextLine();
+                    }
+                }
+                while(toAccount == 0) {
+                    System.out.print("What account do you want to transfer to? 1. Savings or 2. Checking: ");
+                    toAccount = scan.nextInt();
+                    if (toAccount != 1 && toAccount != 2) {
+                        System.out.println("Please enter either 1 or 2.");
+                        scan.nextLine();
+                    }
+                }
+                ConsoleUtility.clearScreen();
+                double transferAmount = -1;
+                System.out.print("How much would you like to transfer? ");
+                while(transferAmount == -1) {
+                    try {
+                        transferAmount = scan.nextDouble();
+                    } catch (Exception e) {
+                        System.out.println("Please enter a number.");
+                        scan.nextLine();
+                    }
+                }
+                if(fromAccount == 1) {
+                    if(!savings.subtractBalance(transferAmount)) {
+                        System.out.println("Insufficient funds in savings account.");
+                    } else {
+                        checking.addBalance(transferAmount);
+                        transactionHistory.incrementTransactionHistory("A");
+                        transactionHistory.addTransaction("A");
+                        System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
 
+                    }
+                } else {
+                    if(!checking.subtractBalance(transferAmount)) {
+                        System.out.println("Insufficient funds in checking account.");
+                    } else {
+                        savings.addBalance(transferAmount);
+                        transactionHistory.incrementTransactionHistory("A");
+                        transactionHistory.addTransaction("A");
+                        System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
+                    }
+                }
+                System.out.println("Transfer successful.");
+            } if(input == 4) {
+                //option 4
+                System.out.println("Savings account: " + savings.getBalance());
+                System.out.println("Checking account: " + checking.getBalance());
+                transactionHistory.incrementTransactionHistory("S");
+                transactionHistory.addTransaction("S");
+                System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
+                System.out.println("Press enter to continue");
+                scan.nextLine();
+            } if(input == 5) {
+                //option 5
+                transactionHistory.getHistory();
+                transactionHistory.incrementTransactionHistory("S");
+                transactionHistory.addTransaction("S");
+                System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
+                System.out.println("Press enter to continue");
+                scan.nextLine();
+            } if(input == 6) {
+                //option 6
+                int newPin = -1;
+                while(newPin == -1) {
+                    System.out.print("Please enter a new PIN number: ");
+                    try {
+                        newPin = scan.nextInt();
+                    } catch (Exception e) {
+                        System.out.println("Please enter an integer.");
+                        scan.nextLine();
+                    }
+                }
+                customer.setPin(newPin);
+                transactionHistory.incrementTransactionHistory("S");
+                transactionHistory.addTransaction("S");
+                System.out.println("Changed PIN.");
+                System.out.println("Transaction ID" + transactionHistory.getLastTransaction());
+                System.out.println("Press enter to continue");
+                scan.nextLine();
+            }
         }
     }
 }

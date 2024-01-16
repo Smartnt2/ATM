@@ -18,7 +18,7 @@ public class Account {
     }
 
     //false means transaction failed, true means transaction went through
-    public boolean subtractBalance(int toSubtract) {
+    public boolean subtractBalance(double toSubtract) {
         double temp = balance;
         if(temp - toSubtract < 0) {
             return false;
