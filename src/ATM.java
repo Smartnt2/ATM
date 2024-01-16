@@ -71,8 +71,8 @@ public class ATM {
         }
 
 
-        int selection = 0;
-        while(selection != 7) {
+        input = 0;
+        while(input != 7) {
             System.out.println("Welcome, " + customer.getName() + ", how can we help you today?");
             System.out.println("1. Withdraw money");
             System.out.println("2. Deposit money");
@@ -144,6 +144,45 @@ public class ATM {
                     }
                 }
 
+            } if(input == 2) {
+                ConsoleUtility.clearScreen();
+                int accountSelection;
+                while(true) {
+                    System.out.println("Would you like to withdraw from 1. Savings or 2. Checking");
+                    accountSelection = scan.nextInt();
+                    if(accountSelection != 1 && accountSelection != 2) {
+                        System.out.println("Please enter either 1 or 2.");
+                    } else {
+                        break;
+                    }
+                }
+                ConsoleUtility.clearScreen();
+                System.out.print("How much would you like to deposit? ");
+                double depositAmount = -1;
+                while(depositAmount == -1) {
+                    try {
+                        depositAmount = scan.nextDouble();
+                    } catch (Exception e) {
+                        System.out.println("Please enter a number.");
+                        scan.nextLine();
+                    }
+                }
+                ConsoleUtility.clearScreen();
+                if(accountSelection == 1) {
+                    savings.addBalance(depositAmount);
+                    transactionHistory.incrementTransactionHistory("A");
+                    transactionHistory.addTransaction("A");
+                    System.out.println("Successfully deposited " + "$" + depositAmount + " to savings");
+                    System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
+                    System.out.println("Current balance in savings account: " + savings.getBalance());
+                } else {
+                    savings.addBalance(depositAmount);
+                    transactionHistory.incrementTransactionHistory("A");
+                    transactionHistory.addTransaction("A");
+                    System.out.println("Successfully deposited " + "$" + depositAmount + " to checking");
+                    System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
+                    System.out.println("Current balance in checking account: " + checking.getBalance());
+                }
             }
 
         }
