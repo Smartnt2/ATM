@@ -7,6 +7,7 @@ public class TransactionHistory {
     public TransactionHistory() {
         transactionNumA = new int[] {0, 0, 0, 0};
         transactionNumS = new int[] {0, 0, 0, 0};
+        history = new ArrayList<>();
     }
 
     public void incrementTransactionHistory(String transactionType) {
@@ -48,17 +49,17 @@ public class TransactionHistory {
     }
 
     public void addTransaction(String transactionType) {
-        String transaction = transactionType;
+        StringBuilder transaction = new StringBuilder(transactionType);
         if(transactionType.equals("A")) {
             for(int digit : transactionNumA) {
-                transaction += digit;
+                transaction.append(digit);
             }
         } if(transactionType.equals("S")) {
             for(int digit : transactionNumS) {
-                transaction += digit;
+                transaction.append(digit);
             }
         }
-        history.add(transaction);
+        history.add(transaction.toString());
     }
 
     public void getHistory() {

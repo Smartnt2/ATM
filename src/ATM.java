@@ -2,10 +2,15 @@ import com.sun.jdi.connect.Connector;
 import java.sql.SQLOutput;
 import java.util.*;
 public class ATM {
+    private Scanner scan;
+    private Customer customer;
+    private Account savings;
+    private Account checking;
+    private TransactionHistory transactionHistory;
     public ATM() { }
 
     public void start() {
-        Scanner scan = new Scanner(System.in);
+        scan = new Scanner(System.in);
 
         System.out.println("Welcome to Cheese Bank!");
         try {
@@ -41,10 +46,10 @@ public class ATM {
         }
         ConsoleUtility.clearScreen();
 
-        Customer customer = new Customer(name, pin);
-        Account savings = new Account("Savings Account", name);
-        Account checking = new Account("Checking Account", name);
-        TransactionHistory transactionHistory = new TransactionHistory();
+        customer = new Customer(name, pin);
+        savings = new Account("Savings Account", name);
+        checking = new Account("Checking Account", name);
+        transactionHistory = new TransactionHistory();
 
         System.out.println("You are now a customer of Cheese Bank! Welcome!");
         try {
@@ -52,13 +57,15 @@ public class ATM {
         } catch (InterruptedException e) {
             System.out.println("error");
         }
+        menu();
+    }
 
-
+    public void menu() {
         int input = 0;
-        while(input != 7) {
+        while (input != 7) {
             //ask for pin
             input = 0;
-            while(!customer.checkPin(input)) {
+            while (!customer.checkPin(input)) {
                 ConsoleUtility.clearScreen();
                 System.out.print("Please enter your PIN number: ");
                 try {
@@ -73,7 +80,7 @@ public class ATM {
                     }
                     continue;
                 }
-                if(!customer.checkPin(input)) {
+                if (!customer.checkPin(input)) {
                     System.out.println("That is not the correct PIN, please try again.");
                     try {
                         Thread.sleep(750);
@@ -83,6 +90,7 @@ public class ATM {
                 }
             }
             //menu
+            ConsoleUtility.clearScreen();
             System.out.println("Welcome, " + customer.getName() + ", how can we help you today?");
             System.out.println("1. Withdraw money");
             System.out.println("2. Deposit money");
@@ -102,15 +110,14 @@ public class ATM {
                 } catch (InterruptedException e1) {
                     System.out.println("error");
                 }
-            }
-            if(input == 1) {
+            } if (input == 1) {
                 //option 1
                 ConsoleUtility.clearScreen();
                 int accountSelection;
-                while(true) {
+                while (true) {
                     System.out.println("Would you like to withdraw from 1. Savings or 2. Checking");
                     accountSelection = scan.nextInt();
-                    if(accountSelection != 1 && accountSelection != 2) {
+                    if (accountSelection != 1 && accountSelection != 2) {
                         System.out.println("Please enter either 1 or 2.");
                         scan.nextLine();
                         try {
@@ -126,7 +133,7 @@ public class ATM {
                 int numFives = 0;
                 int numTwenties = 0;
                 int withdrawAmount = 0;
-                while(withdrawAmount == 0) {
+                while (withdrawAmount == 0) {
                     System.out.println("This machine only dispenses 5's and 20's.");
                     System.out.print("How many 5's would you like to withdraw? ");
                     try {
@@ -154,8 +161,8 @@ public class ATM {
                     }
                     withdrawAmount = numFives * 5 + numTwenties * 20;
                 }
-                if(accountSelection == 1) {
-                    if(!savings.subtractBalance(withdrawAmount)) {
+                if (accountSelection == 1) {
+                    if (!savings.subtractBalance(withdrawAmount)) {
                         System.out.println("Insufficient funds.");
                         try {
                             Thread.sleep(750);
@@ -163,16 +170,14 @@ public class ATM {
                             System.out.println("error");
                         }
                     } else {
-                        transactionHistory.incrementTransactionHistory("A");
-                        transactionHistory.addTransaction("A");
                         System.out.println("Successfully withdrew " + "$" + withdrawAmount + " from savings");
-                        System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
                         System.out.println("Current balance in savings account: " + savings.getBalance());
+                        createRecipt("A");
                         System.out.println("Press enter to return to the main menu");
-                        scan.nextLine();
+                        String wait = scan.nextLine();
                     }
                 } else {
-                    if(!checking.subtractBalance(withdrawAmount)) {
+                    if (!checking.subtractBalance(withdrawAmount)) {
                         System.out.println("insufficient funds.");
                         try {
                             Thread.sleep(750);
@@ -180,24 +185,22 @@ public class ATM {
                             System.out.println("error");
                         }
                     } else {
-                        transactionHistory.incrementTransactionHistory("A");
-                        transactionHistory.addTransaction("A");
                         System.out.println("Successfully withdrew " + "$" + withdrawAmount + " from checking");
-                        System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
                         System.out.println("Current balance in checking account: " + checking.getBalance());
+                        createRecipt("A");
                         System.out.println("Press enter to return to the main menu");
-                        scan.nextLine();
+                        String wait = scan.nextLine();
                     }
                 }
 
-            } if(input == 2) {
+            } if (input == 2) {
                 //option 2
                 ConsoleUtility.clearScreen();
                 int accountSelection;
-                while(true) {
-                    System.out.println("Would you like to withdraw from 1. Savings or 2. Checking");
+                while (true) {
+                    System.out.println("Would you like to deposit from 1. Savings or 2. Checking");
                     accountSelection = scan.nextInt();
-                    if(accountSelection != 1 && accountSelection != 2) {
+                    if (accountSelection != 1 && accountSelection != 2) {
                         System.out.println("Please enter either 1 or 2.");
                         scan.nextLine();
                         try {
@@ -212,7 +215,7 @@ public class ATM {
                 ConsoleUtility.clearScreen();
                 System.out.print("How much would you like to deposit? ");
                 double depositAmount = -1;
-                while(depositAmount == -1) {
+                while (depositAmount == -1) {
                     try {
                         depositAmount = scan.nextDouble();
                     } catch (Exception e) {
@@ -226,30 +229,27 @@ public class ATM {
                     }
                 }
                 ConsoleUtility.clearScreen();
-                if(accountSelection == 1) {
+                if (accountSelection == 1) {
                     savings.addBalance(depositAmount);
-                    transactionHistory.incrementTransactionHistory("A");
-                    transactionHistory.addTransaction("A");
                     System.out.println("Successfully deposited " + "$" + depositAmount + " to savings");
-                    System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
                     System.out.println("Current balance in savings account: " + savings.getBalance());
+                    createRecipt("A");
                     System.out.println("Press enter to return to the main menu");
-                    scan.nextLine();
+                    String wait = scan.nextLine();
                 } else {
                     savings.addBalance(depositAmount);
-                    transactionHistory.incrementTransactionHistory("A");
-                    transactionHistory.addTransaction("A");
                     System.out.println("Successfully deposited " + "$" + depositAmount + " to checking");
-                    System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
                     System.out.println("Current balance in checking account: " + checking.getBalance());
+                    createRecipt("A");
                     System.out.println("Press enter to return to the main menu");
-                    scan.nextLine();
+                    String wait = scan.nextLine();
                 }
-            } if(input == 3) {
+            } if (input == 3) {
                 //option 3
+                ConsoleUtility.clearScreen();
                 int fromAccount = 0;
                 int toAccount = 0;
-                while(fromAccount == 0) {
+                while (fromAccount == 0) {
                     System.out.print("What account do you want to transfer from? 1. Savings or 2. Checking: ");
                     fromAccount = scan.nextInt();
                     if (fromAccount != 1 && fromAccount != 2) {
@@ -262,7 +262,7 @@ public class ATM {
                         }
                     }
                 }
-                while(toAccount == 0) {
+                while (toAccount == 0) {
                     System.out.print("What account do you want to transfer to? 1. Savings or 2. Checking: ");
                     toAccount = scan.nextInt();
                     if (toAccount != 1 && toAccount != 2) {
@@ -278,7 +278,7 @@ public class ATM {
                 ConsoleUtility.clearScreen();
                 double transferAmount = -1;
                 System.out.print("How much would you like to transfer? ");
-                while(transferAmount == -1) {
+                while (transferAmount == -1) {
                     try {
                         transferAmount = scan.nextDouble();
                     } catch (Exception e) {
@@ -291,8 +291,8 @@ public class ATM {
                         }
                     }
                 }
-                if(fromAccount == 1) {
-                    if(!savings.subtractBalance(transferAmount)) {
+                if (fromAccount == 1) {
+                    if (!savings.subtractBalance(transferAmount)) {
                         System.out.println("Insufficient funds in savings account.");
                         try {
                             Thread.sleep(750);
@@ -301,15 +301,13 @@ public class ATM {
                         }
                     } else {
                         checking.addBalance(transferAmount);
-                        transactionHistory.incrementTransactionHistory("A");
-                        transactionHistory.addTransaction("A");
-                        System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
+                        createRecipt("A");
+                        System.out.println("Transfer successful.");
                         System.out.println("Press enter to return to the main menu");
-                        scan.nextLine();
-
+                        String wait = scan.nextLine();
                     }
                 } else {
-                    if(!checking.subtractBalance(transferAmount)) {
+                    if (!checking.subtractBalance(transferAmount)) {
                         System.out.println("Insufficient funds in checking account.");
                         try {
                             Thread.sleep(750);
@@ -318,40 +316,32 @@ public class ATM {
                         }
                     } else {
                         savings.addBalance(transferAmount);
-                        transactionHistory.incrementTransactionHistory("A");
-                        transactionHistory.addTransaction("A");
-                        System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
+                        createRecipt("A");
+                        System.out.println("Transfer successful.");
                         System.out.println("Press enter to return to the main menu");
-                        scan.nextLine();
+                        String wait = scan.nextLine();
                     }
                 }
-                System.out.println("Transfer successful.");
-                try {
-                    Thread.sleep(750);
-                } catch (InterruptedException e1) {
-                    System.out.println("error");
-                }
-            } if(input == 4) {
+            } if (input == 4) {
                 //option 4
+                ConsoleUtility.clearScreen();
                 System.out.println("Savings account: " + savings.getBalance());
                 System.out.println("Checking account: " + checking.getBalance());
-                transactionHistory.incrementTransactionHistory("S");
-                transactionHistory.addTransaction("S");
-                System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
+                createRecipt("S");
                 System.out.println("Press enter to return to the main menu");
-                scan.nextLine();
-            } if(input == 5) {
+                String wait = scan.nextLine();
+            } if (input == 5) {
                 //option 5
+                ConsoleUtility.clearScreen();
                 transactionHistory.getHistory();
-                transactionHistory.incrementTransactionHistory("S");
-                transactionHistory.addTransaction("S");
-                System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
+                createRecipt("S");
                 System.out.println("Press enter to return to the main menu");
-                scan.nextLine();
-            } if(input == 6) {
+                String wait = scan.nextLine();
+            } if (input == 6) {
                 //option 6
+                ConsoleUtility.clearScreen();
                 int newPin = -1;
-                while(newPin == -1) {
+                while (newPin == -1) {
                     System.out.print("Please enter a new PIN number: ");
                     try {
                         newPin = scan.nextInt();
@@ -366,13 +356,17 @@ public class ATM {
                     }
                 }
                 customer.setPin(newPin);
-                transactionHistory.incrementTransactionHistory("S");
-                transactionHistory.addTransaction("S");
                 System.out.println("Changed PIN.");
-                System.out.println("Transaction ID" + transactionHistory.getLastTransaction());
+                createRecipt("S");
                 System.out.println("Press enter to return to the main menu");
-                scan.nextLine();
+                String wait = scan.nextLine();
             }
         }
+    }
+
+    public void createRecipt(String transactionType) {
+        transactionHistory.incrementTransactionHistory(transactionType);
+        transactionHistory.addTransaction(transactionType);
+        System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
     }
 }
