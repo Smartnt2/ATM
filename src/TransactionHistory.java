@@ -4,6 +4,8 @@ public class TransactionHistory {
     private int[] transactionNumA;
     private int[] transactionNumS;
 
+    //TransactionNumA and S are int[] for number padding
+    //i could probably just use printf but i already made this and i dont want to change it lol
     public TransactionHistory() {
         transactionNumA = new int[] {0, 0, 0, 0};
         transactionNumS = new int[] {0, 0, 0, 0};
@@ -48,6 +50,7 @@ public class TransactionHistory {
         }
     }
 
+   //creates a transaction ID as a string and adds it to the history
     public void addTransaction(String transactionType) {
         StringBuilder transaction = new StringBuilder(transactionType);
         if(transactionType.equals("A")) {
@@ -68,6 +71,7 @@ public class TransactionHistory {
         }
     }
 
+    //for use after addTransaction
     public String getLastTransaction() {
         return history.get(history.size()-1);
     }

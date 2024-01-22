@@ -110,7 +110,8 @@ public class ATM {
                 } catch (InterruptedException e1) {
                     System.out.println("error");
                 }
-            } if (input == 1) {
+            }
+            if(input == 1) {
                 //option 1
                 ConsoleUtility.clearScreen();
                 int accountSelection;
@@ -172,7 +173,7 @@ public class ATM {
                     } else {
                         System.out.println("Successfully withdrew " + "$" + withdrawAmount + " from savings");
                         System.out.println("Current balance in savings account: " + savings.getBalance());
-                        createRecipt("A");
+                        printTransactionID("A");
                         System.out.println("Press enter to return to the main menu");
                         String wait = scan.nextLine();
                     }
@@ -187,7 +188,7 @@ public class ATM {
                     } else {
                         System.out.println("Successfully withdrew " + "$" + withdrawAmount + " from checking");
                         System.out.println("Current balance in checking account: " + checking.getBalance());
-                        createRecipt("A");
+                        printTransactionID("A");
                         System.out.println("Press enter to return to the main menu");
                         String wait = scan.nextLine();
                     }
@@ -233,14 +234,14 @@ public class ATM {
                     savings.addBalance(depositAmount);
                     System.out.println("Successfully deposited " + "$" + depositAmount + " to savings");
                     System.out.println("Current balance in savings account: " + savings.getBalance());
-                    createRecipt("A");
+                    printTransactionID("A");
                     System.out.println("Press enter to return to the main menu");
                     String wait = scan.nextLine();
                 } else {
                     savings.addBalance(depositAmount);
                     System.out.println("Successfully deposited " + "$" + depositAmount + " to checking");
                     System.out.println("Current balance in checking account: " + checking.getBalance());
-                    createRecipt("A");
+                    printTransactionID("A");
                     System.out.println("Press enter to return to the main menu");
                     String wait = scan.nextLine();
                 }
@@ -301,8 +302,8 @@ public class ATM {
                         }
                     } else {
                         checking.addBalance(transferAmount);
-                        createRecipt("A");
                         System.out.println("Transfer successful.");
+                        printTransactionID("A");
                         System.out.println("Press enter to return to the main menu");
                         String wait = scan.nextLine();
                     }
@@ -316,7 +317,7 @@ public class ATM {
                         }
                     } else {
                         savings.addBalance(transferAmount);
-                        createRecipt("A");
+                        printTransactionID("A");
                         System.out.println("Transfer successful.");
                         System.out.println("Press enter to return to the main menu");
                         String wait = scan.nextLine();
@@ -327,14 +328,14 @@ public class ATM {
                 ConsoleUtility.clearScreen();
                 System.out.println("Savings account: " + savings.getBalance());
                 System.out.println("Checking account: " + checking.getBalance());
-                createRecipt("S");
+                printTransactionID("S");
                 System.out.println("Press enter to return to the main menu");
                 String wait = scan.nextLine();
             } if (input == 5) {
                 //option 5
                 ConsoleUtility.clearScreen();
                 transactionHistory.getHistory();
-                createRecipt("S");
+                printTransactionID("S");
                 System.out.println("Press enter to return to the main menu");
                 String wait = scan.nextLine();
             } if (input == 6) {
@@ -357,16 +358,16 @@ public class ATM {
                 }
                 customer.setPin(newPin);
                 System.out.println("Changed PIN.");
-                createRecipt("S");
+                printTransactionID("S");
                 System.out.println("Press enter to return to the main menu");
                 String wait = scan.nextLine();
             }
         }
     }
-
-    public void createRecipt(String transactionType) {
+    public void printTransactionID(String transactionType) {
         transactionHistory.incrementTransactionHistory(transactionType);
         transactionHistory.addTransaction(transactionType);
         System.out.println("Transaction ID: " + transactionHistory.getLastTransaction());
     }
+
 }
