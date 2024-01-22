@@ -27,6 +27,7 @@ public class ATM {
             System.out.print("Please set your PIN number: ");
             try {
                 pin = scan.nextInt();
+                scan.nextLine();
                 break;
             } catch (Exception e) {
                 System.out.println("Please enter a number.");
@@ -70,6 +71,7 @@ public class ATM {
                 System.out.print("Please enter your PIN number: ");
                 try {
                     input = scan.nextInt();
+                    scan.nextLine();
                 } catch (Exception e) {
                     System.out.println("Please enter a number.");
                     scan.nextLine();
@@ -100,17 +102,8 @@ public class ATM {
             System.out.println("6. Change PIN");
             System.out.println("7. Exit");
             System.out.print("Enter your selection(number 1-7): ");
-            try {
-                input = scan.nextInt();
-            } catch (Exception e) {
-                System.out.println("Please enter a number.");
-                scan.nextLine();
-                try {
-                    Thread.sleep(750);
-                } catch (InterruptedException e1) {
-                    System.out.println("error");
-                }
-            }
+            input = scan.nextInt();
+            scan.nextLine();
             if(input == 1) {
                 //option 1
                 ConsoleUtility.clearScreen();
@@ -118,50 +111,35 @@ public class ATM {
                 while (true) {
                     System.out.println("Would you like to withdraw from 1. Savings or 2. Checking");
                     accountSelection = scan.nextInt();
+                    scan.nextLine();
                     if (accountSelection != 1 && accountSelection != 2) {
                         System.out.println("Please enter either 1 or 2.");
-                        scan.nextLine();
                         try {
                             Thread.sleep(750);
                         } catch (InterruptedException e1) {
                             System.out.println("error");
                         }
+                        ConsoleUtility.clearScreen();
                     } else {
                         break;
                     }
                 }
                 ConsoleUtility.clearScreen();
-                int numFives = 0;
-                int numTwenties = 0;
-                int withdrawAmount = 0;
-                while (withdrawAmount == 0) {
-                    System.out.println("This machine only dispenses 5's and 20's.");
-                    System.out.print("How many 5's would you like to withdraw? ");
-                    try {
-                        numFives = scan.nextInt();
-                    } catch (Exception e) {
-                        System.out.println("Please enter a number.");
-                        scan.nextLine();
-                        try {
-                            Thread.sleep(750);
-                        } catch (InterruptedException e1) {
-                            System.out.println("error");
-                        }
-                    }
-                    System.out.print("How many 20's would you like to withdraw? ");
-                    try {
-                        numTwenties = scan.nextInt();
-                    } catch (Exception e) {
-                        System.out.println("Please enter a number.");
-                        scan.nextLine();
-                        try {
-                            Thread.sleep(750);
-                        } catch (InterruptedException e1) {
-                            System.out.println("error");
-                        }
-                    }
-                    withdrawAmount = numFives * 5 + numTwenties * 20;
-                }
+                int numFives;
+                int numTwenties;
+                int withdrawAmount;
+                System.out.println("This machine only dispenses 5's and 20's.");
+                System.out.print("How many 5's would you like to withdraw? ");
+
+                numFives = scan.nextInt();
+                scan.nextLine();
+
+                System.out.print("How many 20's would you like to withdraw? ");
+
+                numTwenties = scan.nextInt();
+                scan.nextLine();
+
+                withdrawAmount = numFives * 5 + numTwenties * 20;
                 if (accountSelection == 1) {
                     if (!savings.subtractBalance(withdrawAmount)) {
                         System.out.println("Insufficient funds.");
@@ -175,7 +153,7 @@ public class ATM {
                         System.out.println("Current balance in savings account: " + savings.getBalance());
                         printTransactionID("A");
                         System.out.println("Press enter to return to the main menu");
-                        String wait = scan.nextLine();
+                        scan.nextLine();
                     }
                 } else {
                     if (!checking.subtractBalance(withdrawAmount)) {
@@ -190,7 +168,7 @@ public class ATM {
                         System.out.println("Current balance in checking account: " + checking.getBalance());
                         printTransactionID("A");
                         System.out.println("Press enter to return to the main menu");
-                        String wait = scan.nextLine();
+                        scan.nextLine();
                     }
                 }
 
@@ -199,36 +177,25 @@ public class ATM {
                 ConsoleUtility.clearScreen();
                 int accountSelection;
                 while (true) {
-                    System.out.println("Would you like to deposit from 1. Savings or 2. Checking");
+                    System.out.println("Would you like to deposit into 1. Savings or 2. Checking");
                     accountSelection = scan.nextInt();
+                    scan.nextLine();
                     if (accountSelection != 1 && accountSelection != 2) {
                         System.out.println("Please enter either 1 or 2.");
-                        scan.nextLine();
                         try {
                             Thread.sleep(750);
                         } catch (InterruptedException e1) {
                             System.out.println("error");
                         }
+                        ConsoleUtility.clearScreen();
                     } else {
                         break;
                     }
                 }
                 ConsoleUtility.clearScreen();
                 System.out.print("How much would you like to deposit? ");
-                double depositAmount = -1;
-                while (depositAmount == -1) {
-                    try {
-                        depositAmount = scan.nextDouble();
-                    } catch (Exception e) {
-                        System.out.println("Please enter a number.");
-                        scan.nextLine();
-                        try {
-                            Thread.sleep(750);
-                        } catch (InterruptedException e1) {
-                            System.out.println("error");
-                        }
-                    }
-                }
+                double depositAmount = scan.nextDouble();
+                scan.nextLine();
                 ConsoleUtility.clearScreen();
                 if (accountSelection == 1) {
                     savings.addBalance(depositAmount);
@@ -236,14 +203,14 @@ public class ATM {
                     System.out.println("Current balance in savings account: " + savings.getBalance());
                     printTransactionID("A");
                     System.out.println("Press enter to return to the main menu");
-                    String wait = scan.nextLine();
+                    scan.nextLine();
                 } else {
                     savings.addBalance(depositAmount);
                     System.out.println("Successfully deposited " + "$" + depositAmount + " to checking");
                     System.out.println("Current balance in checking account: " + checking.getBalance());
                     printTransactionID("A");
                     System.out.println("Press enter to return to the main menu");
-                    String wait = scan.nextLine();
+                    scan.nextLine();
                 }
             } if (input == 3) {
                 //option 3
@@ -253,9 +220,9 @@ public class ATM {
                 while (fromAccount == 0) {
                     System.out.print("What account do you want to transfer from? 1. Savings or 2. Checking: ");
                     fromAccount = scan.nextInt();
+                    scan.nextLine();
                     if (fromAccount != 1 && fromAccount != 2) {
                         System.out.println("Please enter either 1 or 2.");
-                        scan.nextLine();
                         try {
                             Thread.sleep(750);
                         } catch (InterruptedException e1) {
@@ -266,9 +233,9 @@ public class ATM {
                 while (toAccount == 0) {
                     System.out.print("What account do you want to transfer to? 1. Savings or 2. Checking: ");
                     toAccount = scan.nextInt();
+                    scan.nextLine();
                     if (toAccount != 1 && toAccount != 2) {
                         System.out.println("Please enter either 1 or 2.");
-                        scan.nextLine();
                         try {
                             Thread.sleep(750);
                         } catch (InterruptedException e1) {
@@ -282,9 +249,9 @@ public class ATM {
                 while (transferAmount == -1) {
                     try {
                         transferAmount = scan.nextDouble();
+                        scan.nextLine();
                     } catch (Exception e) {
                         System.out.println("Please enter a number.");
-                        scan.nextLine();
                         try {
                             Thread.sleep(750);
                         } catch (InterruptedException e1) {
@@ -305,7 +272,7 @@ public class ATM {
                         System.out.println("Transfer successful.");
                         printTransactionID("A");
                         System.out.println("Press enter to return to the main menu");
-                        String wait = scan.nextLine();
+                        scan.nextLine();
                     }
                 } else {
                     if (!checking.subtractBalance(transferAmount)) {
@@ -320,7 +287,7 @@ public class ATM {
                         printTransactionID("A");
                         System.out.println("Transfer successful.");
                         System.out.println("Press enter to return to the main menu");
-                        String wait = scan.nextLine();
+                        scan.nextLine();
                     }
                 }
             } if (input == 4) {
@@ -330,14 +297,14 @@ public class ATM {
                 System.out.println("Checking account: " + checking.getBalance());
                 printTransactionID("S");
                 System.out.println("Press enter to return to the main menu");
-                String wait = scan.nextLine();
+                scan.nextLine();
             } if (input == 5) {
                 //option 5
                 ConsoleUtility.clearScreen();
                 transactionHistory.getHistory();
                 printTransactionID("S");
                 System.out.println("Press enter to return to the main menu");
-                String wait = scan.nextLine();
+                scan.nextLine();
             } if (input == 6) {
                 //option 6
                 ConsoleUtility.clearScreen();
@@ -346,6 +313,7 @@ public class ATM {
                     System.out.print("Please enter a new PIN number: ");
                     try {
                         newPin = scan.nextInt();
+                        scan.nextLine();
                     } catch (Exception e) {
                         System.out.println("Please enter an integer.");
                         scan.nextLine();
@@ -360,7 +328,7 @@ public class ATM {
                 System.out.println("Changed PIN.");
                 printTransactionID("S");
                 System.out.println("Press enter to return to the main menu");
-                String wait = scan.nextLine();
+                scan.nextLine();
             }
         }
     }

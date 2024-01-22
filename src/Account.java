@@ -13,8 +13,8 @@ public class Account {
         balance += toAdd;
     }
 
-    public double getBalance() {
-        return balance;
+    public String getBalance() {
+        return "$" + balance;
     }
 
     //false means transaction failed, true means transaction went through
